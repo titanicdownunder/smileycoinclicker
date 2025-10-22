@@ -47,14 +47,10 @@
     </div>
     <div class="card">
       <h2>Coming Soon</h2>
-      <p>Global leaderboard, daily streaks, and a “SmileyCoin” mini-economy.</p>
-      <section class="grid" id="cards">
-  …
-  <div class="card">
-    <h2>Coming Soon</h2>
-    <p>Global leaderboard, daily streaks, and a “SmileyCoin” mini-economy.</p>
+      <form name="early-access" netlify netlify-honeypot="bot-field" class="subscribe-card">
+      <input type="hidden" name="form-name" value="early-access">
+      <p class="hidden"><label>Don’t fill this out: <input name="bot-field"></label></p>
 
-    <form name="early-access" netlify netlify-honeypot="bot-field" class="subscribe-card">
       <label class="field">
         <span>Email</span>
         <input type="email" name="email" placeholder="you@example.com" required>
@@ -68,6 +64,8 @@
       <button type="submit">Notify me</button>
       <p class="small">We’ll email you when the economy + accounts go live.</p>
     </form>
+  </div>
+</section>
   </div>
 </section>
     </div>
