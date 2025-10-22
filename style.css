@@ -126,3 +126,10 @@ h1{font-size:clamp(2rem,5vw,3rem);margin:0.5rem 0}
 }
 .overlay p{ margin: .25rem 0 1.25rem }
 .overlay .btn{ font-size: 1rem; }
+/* Hide Netlify honeypot field */
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0;
+  overflow: hidden;
+}
