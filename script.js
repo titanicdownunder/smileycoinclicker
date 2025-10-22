@@ -245,3 +245,21 @@ document.addEventListener('DOMContentLoaded', () => {
 // TIP: When your game ends, call saveBestScore(actualScore);
 // Example (you add this in your game-over code path):
 //    saveBestScore(currentClicks);
+/* ---- Block game hotkeys while typing in form fields ---- */
+(function () {
+  const TYPING_SELECTOR = 'input, textarea, select, [contenteditable], [contenteditable="true"]';
+
+  function isTypingTarget(el) {
+    return !!(el && (el.closest ? el.closest(TYPING_SELECTOR) : null));
+  }
+
+  // In capture phase so we intercept before game handlers
+  ['keydown', 'keypress', 'keyup'].forEach(evt =>
+    document.addEventListener(evt, (e) => {
+      if (isTypingTarget(e.target)) {
+        // Let the field receive the key, but stop it reaching global handlers
+        e.stopPropagation();
+      }
+    }, true)
+  );
+})();
