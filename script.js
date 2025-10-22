@@ -53,6 +53,25 @@ function restartInactivityTimer(){ clearTimeout(inactivityTimer); inactivityTime
 
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", () => {
+   // Start button: clear any old KO, mark game started, reveal game area
+    document.getElementById("startBtn").addEventListener("click", () => {
+      // flags & storage keys used by script.js:
+      sessionStorage.setItem("game_started", "1");         // enable KO logic after start
+      sessionStorage.setItem("smiley_retrying", "1");      // avoid "refresh KO" during reveal
+      localStorage.removeItem("smiley_last_gameover");     // clear any stale KO from earlier
+      localStorage.removeItem("smiley_click_count_v1");    // fresh run
+
+      // show game, hide landing/cards, swap background
+      document.body.classList.remove("starting");
+      document.getElementById("landing").style.display = "none";
+      document.getElementById("cards").style.display = "none";
+      document.getElementById("gameArea").style.display = "block";
+
+      // initialize counter display
+      if (window.setCount) setCount(0);
+      const btn = document.getElementById("clicker");
+      if (btn) btn.focus();
+    });
   const started = sessionStorage.getItem("game_started")==="1";
 
   // Only auto-taunt if the player previously started the game
