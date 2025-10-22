@@ -47,6 +47,7 @@
     </div>
     <div class="card">
       <h2>Coming Soon</h2>
+<<<<<<< Updated upstream
       <form name="early-access" netlify netlify-honeypot="bot-field" class="subscribe-card">
       <input type="hidden" name="form-name" value="early-access">
       <p class="hidden"><label>Don’t fill this out: <input name="bot-field"></label></p>
@@ -68,6 +69,28 @@
 </section>
   </div>
 </section>
+=======
+      <p>Global leaderboard, daily streaks, and a “SmileyCoin” mini-economy.</p>
+<form name="early-access" netlify netlify-honeypot="bot-field" class="subscribe-card">
+  <input type="hidden" name="form-name" value="early-access">
+  <p class="hidden"><label>Don’t fill this out: <input name="bot-field"></label></p>
+
+  <label class="field">
+    <span>Email</span>
+    <input type="email" name="email" placeholder="you@example.com" required>
+  </label>
+
+  <label class="field">
+    <span>Reserve a username (optional)</span>
+    <input type="text" name="desired_username"
+           minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
+           placeholder="smiley_fiend">
+  </label>
+
+  <button type="submit">Notify me</button>
+  <p class="small">We’ll email you when the economy + accounts go live.</p>
+</form>
+>>>>>>> Stashed changes
     </div>
   </section>
 
@@ -93,8 +116,35 @@
   </section>
 
   <script src="script.js"></script>
+<<<<<<< Updated upstream
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon='{"token":"YOUR_TOKEN"}'></script>
   <!-- CANARY v1 -->
+=======
+  <script>
+    // Start button: clear any old KO, mark game started, reveal game area
+    document.getElementById("startBtn").addEventListener("click", () => {
+      // flags & storage keys used by script.js:
+      sessionStorage.setItem("game_started", "1");         // enable KO logic after start
+      sessionStorage.setItem("smiley_retrying", "1");      // avoid "refresh KO" during reveal
+      localStorage.removeItem("smiley_last_gameover");     // clear any stale KO from earlier
+      localStorage.removeItem("smiley_click_count_v1");    // fresh run
+
+      // show game, hide landing/cards, swap background
+      document.body.classList.remove("starting");
+      document.getElementById("landing").style.display = "none";
+      document.getElementById("cards").style.display = "none";
+      document.getElementById("gameArea").style.display = "block";
+
+      // initialize counter display
+      if (window.setCount) setCount(0);
+      const btn = document.getElementById("clicker");
+      if (btn) btn.focus();
+    });
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "TOKEN_GOES_HERE"}'></script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cedff1f8384b4e3aa7cad4452919887c"}'></script><!-- End Cloudflare Web Analytics -->
+>>>>>>> Stashed changes
 </body>
 </html>
