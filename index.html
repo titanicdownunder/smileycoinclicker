@@ -93,6 +93,32 @@
 >>>>>>> Stashed changes
     </div>
   </section>
+<!-- PLAYER ACCOUNT -->
+<section class="account" id="accountBox">
+  <h2>Account</h2>
+  <form id="auth-form" class="subscribe-card">
+    <label class="field">
+      <span>Email</span>
+      <input type="email" id="auth-email" placeholder="you@example.com" required>
+    </label>
+    <label class="field">
+      <span>Password</span>
+      <input type="password" id="auth-password" placeholder="••••••" minlength="6" required>
+    </label>
+    <label class="field">
+      <span>Pick a username (optional)</span>
+      <input type="text" id="auth-username" pattern="[a-zA-Z0-9_]+" minlength="3" maxlength="20" placeholder="smiley_fiend">
+    </label>
+    <button type="submit">Sign up / Log in</button>
+    <p id="auth-status" class="small"></p>
+  </form>
+</section>
+
+<!-- WORLD LEADERBOARD -->
+<section class="leaderboard" id="leaderboardBox" aria-live="polite">
+  <h2>World Ranking</h2>
+  <ol id="leaderboard-list" class="subscribe-card" style="list-style: decimal; padding-left: 1.25rem;"></ol>
+</section>
 
   <!-- Game Area -->
   <section id="gameArea">

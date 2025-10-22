@@ -132,3 +132,116 @@ function startFaceChaos(){
 function clamp01(n){ return Math.min(1, Math.max(0, n)); }
 function lerp(a,b,t){ return a + (b-a)*t; }
 function randRange(min,max){ return Math.random()*(max-min)+min; }
+/* =========================
+   Supabase: auth + leaderboard
+   (Paste at the very end of script.js)
+   ========================= */
+
+// Load/create the Supabase client once
+async function ensureSupabase() {
+  if (!window.supabase) {
+    // Load SDK from jsdelivr (this is why we added it to CSP)
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+    window.supabase = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+  }
+  return window.supabase;
+}
+
+// Hook up the Account form (Sign up / Log in)
+function initAuthUI() {
+  const form = document.getElementById('auth-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const desired = (document.getElementById('auth-username').value || '').trim();
+    const status = document.getElementById('auth-status');
+    status.textContent = 'Working...';
+
+    const supabase = await ensureSupabase();
+
+    // Try sign-in first
+    let { data: signIn, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (signInErr && /invalid login/i.test(signInErr.message || '')) {
+      // Not found -> sign up
+      const { data: signUp, error: signUpErr } = await supabase.auth.signUp({ email, password });
+      if (signUpErr) { status.textContent = signUpErr.message; return; }
+
+      // Create profile row (username optional)
+      const user = signUp.user;
+      const profile = { id: user.id };
+      if (desired) profile.username = desired;
+      await supabase.from('profiles').upsert(profile);
+
+      status.textContent = 'Check your email to confirm your account.';
+      return;
+    }
+
+    if (signInErr) { status.textContent = signInErr.message; return; }
+
+    // Ensure profile exists for signed-in user
+    const user = signIn.user;
+    await supabase.from('profiles').upsert({ id: user.id });
+    status.textContent = 'Logged in!';
+    loadLeaderboard(); // refresh list
+  });
+}
+
+// Save a player's best score (call this when your game ends)
+async function saveBestScore(score) {
+  try {
+    const supabase = await ensureSupabase();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return; // only persist for logged-in users
+
+    const { data: existing } = await supabase
+      .from('scores').select('max_score').eq('user_id', user.id).maybeSingle();
+
+    const maxScore = Math.max(existing?.max_score || 0, score | 0);
+    await supabase.from('scores').upsert({
+      user_id: user.id,
+      max_score: maxScore,
+      updated_at: new Date().toISOString()
+    });
+  } catch (e) {
+    console.warn('saveBestScore failed', e);
+  }
+}
+
+// Pull top scores and show them
+async function loadLeaderboard(limit = 20) {
+  try {
+    const supabase = await ensureSupabase();
+    const { data, error } = await supabase
+      .from('scores')
+      .select('max_score, updated_at, user_id, profiles:profiles!inner(username)')
+      .order('max_score', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    const list = document.getElementById('leaderboard-list');
+    if (!list) return;
+    list.innerHTML = '';
+    (data || []).forEach((row) => {
+      const li = document.createElement('li');
+      li.textContent = `${row.profiles?.username || 'anon'} — ${row.max_score}`;
+      list.appendChild(li);
+    });
+  } catch (e) {
+    console.warn('loadLeaderboard failed', e);
+  }
+}
+
+// Start these once the page is ready
+document.addEventListener('DOMContentLoaded', () => {
+  initAuthUI();
+  loadLeaderboard();
+});
+
+// TIP: When your game ends, call saveBestScore(actualScore);
+// Example (you add this in your game-over code path):
+//    saveBestScore(currentClicks);
