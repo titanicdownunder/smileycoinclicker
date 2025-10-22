@@ -140,7 +140,6 @@ function randRange(min,max){ return Math.random()*(max-min)+min; }
 // Load/create the Supabase client once
 async function ensureSupabase() {
   if (!window.supabase) {
-    // Load SDK from jsdelivr (this is why we added it to CSP)
     const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
     window.supabase = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
   }
