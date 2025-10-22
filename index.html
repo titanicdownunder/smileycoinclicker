@@ -1,29 +1,42 @@
 ﻿<!doctype html>
 <html lang="en">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SmileyCoin Clicker</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%98%8A%3C/text%3E%3C/svg%3E">
+
+  <!-- Minimal page-specific styles (OK with CSP: style-src 'unsafe-inline') -->
   <style>
-    /* Landing visuals */
     body.starting{ background:linear-gradient(#fff7cc,#fff3a6); color:#111827; }
     .landing{ min-height:60vh; display:grid; place-items:center; text-align:center; }
     .landing h1{ font-size:clamp(2rem,7vw,3.5rem); margin:.25rem 0 }
     .landing h1 span{ color:#f59e0b }
     .landing .logo{ font-size:clamp(64px,10vw,96px) }
     .landing .tag{ opacity:.8;margin:.25rem 0 1.25rem }
-    .btn-start{
-      font-size:1.1rem; padding:1rem 1.5rem; border-radius:1rem; border:none;
-      background:#111827; color:#fff; cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,.15);
-    }
-    .grid{ max-width:1100px; margin:2rem auto 3rem; padding:0 1rem; display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+    .btn-start{ font-size:1.1rem; padding:1rem 1.5rem; border-radius:1rem; border:none;
+      background:#111827; color:#fff; cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,.15); }
+    .grid{ max-width:1100px; margin:2rem auto 3rem; padding:0 1rem; display:grid; gap:1rem;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
     .card{ background:#fff; border-radius:1rem; padding:1.25rem; box-shadow:0 8px 24px rgba(0,0,0,.08) }
     .card h2{ margin-top:0 }
     #gameArea{ display:none }
+
+    /* Netlify honeypot field (kept for spam protection) */
+    .hidden { display:none !important; visibility:hidden !important; height:0; overflow:hidden; }
+
+    /* Quick form niceties */
+    .subscribe-card { max-width: 420px; margin: 1rem 0; padding: 1rem; border: 1px solid #e5e7eb; border-radius:12px; }
+    .subscribe-card .field { display:grid; gap:.35rem; margin-bottom:.8rem; }
+    .subscribe-card input { padding:.6rem .7rem; border:1px solid #d1d5db; border-radius:8px; width:100%; }
+    .subscribe-card button { padding:.7rem 1rem; border:0; border-radius:10px; cursor:pointer; }
+    .subscribe-card .small { font-size:.85rem; opacity:.8; margin-top:.5rem; }
   </style>
 </head>
+
 <body class="starting">
   <!-- Landing -->
   <section class="landing" id="landing">
@@ -41,87 +54,66 @@
       <h2>How to Play</h2>
       <p>– Click and find out 😉 –</p>
     </div>
+
     <div class="card">
       <h2>Rules</h2>
       <p><strong>Click to glory.</strong></p>
     </div>
+
     <div class="card">
       <h2>Coming Soon</h2>
-<<<<<<< Updated upstream
-      <form name="early-access" netlify netlify-honeypot="bot-field" class="subscribe-card">
-      <input type="hidden" name="form-name" value="early-access">
-      <p class="hidden"><label>Don’t fill this out: <input name="bot-field"></label></p>
-
-      <label class="field">
-        <span>Email</span>
-        <input type="email" name="email" placeholder="you@example.com" required>
-      </label>
-
-      <label class="field">
-        <span>Reserve a username (optional)</span>
-        <input type="text" name="desired_username" minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+" placeholder="smiley_fiend">
-      </label>
-
-      <button type="submit">Notify me</button>
-      <p class="small">We’ll email you when the economy + accounts go live.</p>
-    </form>
-  </div>
-</section>
-  </div>
-</section>
-=======
       <p>Global leaderboard, daily streaks, and a “SmileyCoin” mini-economy.</p>
-<form name="early-access" netlify netlify-honeypot="bot-field" class="subscribe-card">
-  <input type="hidden" name="form-name" value="early-access">
-  <p class="hidden"><label>Don’t fill this out: <input name="bot-field"></label></p>
 
-  <label class="field">
-    <span>Email</span>
-    <input type="email" name="email" placeholder="you@example.com" required>
-  </label>
+      <!-- Early-access signup (Netlify Forms) -->
+      <form name="early-access" netlify netlify-honeypot="bot-field" class="subscribe-card">
+        <input type="hidden" name="form-name" value="early-access">
+        <p class="hidden">
+          <label>Don’t fill this out: <input name="bot-field"></label>
+        </p>
 
-  <label class="field">
-    <span>Reserve a username (optional)</span>
-    <input type="text" name="desired_username"
-           minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
-           placeholder="smiley_fiend">
-  </label>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@example.com" required>
+        </label>
 
-  <button type="submit">Notify me</button>
-  <p class="small">We’ll email you when the economy + accounts go live.</p>
-</form>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+        <label class="field">
+          <span>Reserve a username (optional)</span>
+          <input type="text" name="desired_username" minlength="3" maxlength="20"
+                 pattern="[a-zA-Z0-9_]+" placeholder="smiley_fiend">
+        </label>
+
+        <button type="submit">Notify me</button>
+        <p class="small">We’ll email you when the economy + accounts go live.</p>
+      </form>
     </div>
   </section>
-<!-- PLAYER ACCOUNT -->
-<section class="account" id="accountBox">
-  <h2>Account</h2>
-  <form id="auth-form" class="subscribe-card">
-    <label class="field">
-      <span>Email</span>
-      <input type="email" id="auth-email" placeholder="you@example.com" required>
-    </label>
-    <label class="field">
-      <span>Password</span>
-      <input type="password" id="auth-password" placeholder="••••••" minlength="6" required>
-    </label>
-    <label class="field">
-      <span>Pick a username (optional)</span>
-      <input type="text" id="auth-username" pattern="[a-zA-Z0-9_]+" minlength="3" maxlength="20" placeholder="smiley_fiend">
-    </label>
-    <button type="submit">Sign up / Log in</button>
-    <p id="auth-status" class="small"></p>
-  </form>
-</section>
 
-<!-- WORLD LEADERBOARD -->
-<section class="leaderboard" id="leaderboardBox" aria-live="polite">
-  <h2>World Ranking</h2>
-  <ol id="leaderboard-list" class="subscribe-card" style="list-style: decimal; padding-left: 1.25rem;"></ol>
-</section>
+  <!-- Account -->
+  <section class="account" id="accountBox">
+    <h2>Account</h2>
+    <form id="auth-form" class="subscribe-card">
+      <label class="field">
+        <span>Email</span>
+        <input type="email" id="auth-email" placeholder="you@example.com" required>
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="auth-password" placeholder="••••••" minlength="6" required>
+      </label>
+      <label class="field">
+        <span>Pick a username (optional)</span>
+        <input type="text" id="auth-username" pattern="[a-zA-Z0-9_]+" minlength="3" maxlength="20" placeholder="smiley_fiend">
+      </label>
+      <button type="submit">Sign up / Log in</button>
+      <p id="auth-status" class="small"></p>
+    </form>
+  </section>
+
+  <!-- Leaderboard -->
+  <section class="leaderboard" id="leaderboardBox" aria-live="polite">
+    <h2>World Ranking</h2>
+    <ol id="leaderboard-list" class="subscribe-card" style="list-style: decimal; padding-left: 1.25rem;"></ol>
+  </section>
 
   <!-- Game Area -->
   <section id="gameArea">
@@ -140,43 +132,18 @@
     <main class="wrap">
       <h1>😊 SmileyCoin Clicker</h1>
       <p class="counter"><span id="count">0</span> clicks</p>
-      <button id="clicker" class="btn">If you’re happy and you know it, click the button 🎉</button>
+      <button id="clicker" class="btn">
+        If you’re happy and you know it, click the button 🎉
+      </button>
     </main>
   </section>
 
+  <!-- Load keys first, then your app JS. Keep Cloudflare last. -->
+  <script src="supabase-env.js"></script>
   <script src="script.js"></script>
-<<<<<<< Updated upstream
+
+  <!-- Cloudflare Web Analytics (use your real token) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon='{"token":"YOUR_TOKEN"}'></script>
-  <!-- CANARY v1 -->
-=======
-  <script>
-    // Start button: clear any old KO, mark game started, reveal game area
-    document.getElementById("startBtn").addEventListener("click", () => {
-      // flags & storage keys used by script.js:
-      sessionStorage.setItem("game_started", "1");         // enable KO logic after start
-      sessionStorage.setItem("smiley_retrying", "1");      // avoid "refresh KO" during reveal
-      localStorage.removeItem("smiley_last_gameover");     // clear any stale KO from earlier
-      localStorage.removeItem("smiley_click_count_v1");    // fresh run
-
-      // show game, hide landing/cards, swap background
-      document.body.classList.remove("starting");
-      document.getElementById("landing").style.display = "none";
-      document.getElementById("cards").style.display = "none";
-      document.getElementById("gameArea").style.display = "block";
-
-      // initialize counter display
-      if (window.setCount) setCount(0);
-      const btn = document.getElementById("clicker");
-      if (btn) btn.focus();
-    });
-  </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-        data-cf-beacon='{"token": "TOKEN_GOES_HERE"}'></script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cedff1f8384b4e3aa7cad4452919887c"}'></script><!-- End Cloudflare Web Analytics -->
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 </body>
 </html>
