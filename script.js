@@ -263,3 +263,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, true)
   );
 })();
+async function ensureSupabase() {
+  if (!window.supabase) {
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+    window.supabase = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+  }
+  return window.supabase;
+}
