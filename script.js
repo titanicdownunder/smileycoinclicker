@@ -140,7 +140,6 @@ function randRange(min,max){ return Math.random()*(max-min)+min; }
 // Load/create the Supabase client once
 async function ensureSupabase() {
   if (!window.supabase) {
-    // Load SDK from jsdelivr (this is why we added it to CSP)
     const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
     window.supabase = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
   }
@@ -154,39 +153,53 @@ function initAuthUI() {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('auth-email').value.trim();
-    const password = document.getElementById('auth-password').value;
-    const desired = (document.getElementById('auth-username').value || '').trim();
     const status = document.getElementById('auth-status');
-    status.textContent = 'Working...';
+    const email = (document.getElementById('auth-email')?.value || '').trim();
+    const password = document.getElementById('auth-password')?.value || '';
+    const desired = (document.getElementById('auth-username')?.value || '').trim();
 
-    const supabase = await ensureSupabase();
+    const done = (msg) => { if (status) status.textContent = msg || ''; };
 
-    // Try sign-in first
-    let { data: signIn, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+    try {
+      done('Working...');
 
-    if (signInErr && /invalid login/i.test(signInErr.message || '')) {
-      // Not found -> sign up
-      const { data: signUp, error: signUpErr } = await supabase.auth.signUp({ email, password });
-      if (signUpErr) { status.textContent = signUpErr.message; return; }
+      if (!email || !password) {
+        done('Please enter email and password.');
+        return;
+      }
 
-      // Create profile row (username optional)
-      const user = signUp.user;
-      const profile = { id: user.id };
-      if (desired) profile.username = desired;
-      await supabase.from('profiles').upsert(profile);
+      const supabase = await ensureSupabase();
 
-      status.textContent = 'Check your email to confirm your account.';
-      return;
+      // Try sign-in
+      let { data: signIn, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (signInErr && /invalid login|invalid credentials/i.test(signInErr.message || '')) {
+        // User not found → sign up
+        const { data: signUp, error: signUpErr } = await supabase.auth.signUp({ email, password });
+        if (signUpErr) { done(signUpErr.message || 'Sign up failed.'); return; }
+
+        const user = signUp.user;
+        const profile = { id: user.id };
+        if (desired) profile.username = desired;
+        const { error: upErr } = await supabase.from('profiles').upsert(profile);
+        if (upErr) { done(upErr.message); return; }
+
+        done('Check your email to confirm your account.');
+        return;
+      }
+
+      if (signInErr) { done(signInErr.message || 'Login failed.'); return; }
+
+      const user = signIn.user;
+      const { error: upErr } = await supabase.from('profiles').upsert({ id: user.id });
+      if (upErr) { done(upErr.message); return; }
+
+      done('Logged in!');
+      loadLeaderboard();
+    } catch (err) {
+      console.error(err);
+      done(typeof err?.message === 'string' ? err.message : 'Something went wrong.');
     }
-
-    if (signInErr) { status.textContent = signInErr.message; return; }
-
-    // Ensure profile exists for signed-in user
-    const user = signIn.user;
-    await supabase.from('profiles').upsert({ id: user.id });
-    status.textContent = 'Logged in!';
-    loadLeaderboard(); // refresh list
   });
 }
 
@@ -263,3 +276,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, true)
   );
 })();
+async function ensureSupabase() {
+  if (!window.supabase) {
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+    window.supabase = createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+  }
+  return window.supabase;
+}
