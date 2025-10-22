@@ -1,0 +1,10 @@
+﻿<!doctype html>
+<meta charset="utf-8">
+<title>Resetting…</title>
+<script>
+  localStorage.removeItem("smiley_click_count_v1");
+  // optional: also remove halloween mode so it reverts right away
+  document.body && document.body.classList && document.body.classList.remove("halloween");
+  location.href = "/";
+</script>
+<p>Resetting counter…</p>
