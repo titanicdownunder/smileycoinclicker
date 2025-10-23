@@ -61,7 +61,7 @@
       <p>Global leaderboard, daily streaks, and a “SmileyCoin” mini-economy.</p>
 
       <!-- Early-access signup (Netlify Forms) -->
-       <form action="https://formspree.io/f/https://formspree.io/f/xanpggge" method="POST" class="subscribe-card">
+      <form action="https://formspree.io/f/https://formspree.io/f/xanpggge" method="POST" class="subscribe-card">
   <input type="hidden" name="_subject" value="SmileyCoin Early Access Signup">
 
   <label class="field">
@@ -78,6 +78,7 @@
   <button type="submit">Notify me</button>
   <p class="small">We’ll email you when the economy + accounts go live.</p>
 </form>
+
     </div>
   </section>
 
@@ -131,12 +132,12 @@
     </main>
   </section>
 
-  <!-- Load keys first, then your app JS. Keep Cloudflare last. -->
-  <script src="supabase-env.js"></script>
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-env.js"></script>
+<script src="script.js"></script>
 
   <!-- Cloudflare Web Analytics (use your real token) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token":"YOUR_TOKEN"}'></script>
+          data-cf-beacon='{"token":"cedff1f8384b4e3aa7cad4452919887c"}'></script>
 </body>
 </html>
