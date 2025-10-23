@@ -186,15 +186,16 @@ function initAuthUI() {
         const { data: signUp, error: signUpErr } = await supabase.auth.signUp({ email, password });
         if (signUpErr) { done(signUpErr.message || 'Sign up failed.'); return; }
 
-        const user = signUp.user;
-        const profile = { id: user.id };
-        if (desired) profile.username = desired;
-        const { error: upErr } = await supabase.from('profiles').upsert(profile);
-        if (upErr) { done(upErr.message); return; }
-
-        done('Check your email to confirm your account.');
-        return;
-      }
+      const user = signIn?.user || signUp?.user;
+if (user) {
+  const desired = document.querySelector('input[name="username"]').value.trim();
+  if (desired) {
+    const { error: upErr } = await supabase
+      .from('profiles')
+      .upsert({ id: user.id, username: desired });
+    if (upErr) console.error('Upsert error:', upErr.message);
+  }
+}
 
       if (signInErr) { done(signInErr.message || 'Login failed.'); return; }
 
