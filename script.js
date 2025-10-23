@@ -1,4 +1,8 @@
-﻿const KEY = "smiley_click_count_v1";
+window.SUPABASE_URL = "https://hvoodumbfkfwnrmisgvw.supabase.co";
+window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2b29kdW1iZmtmd25ybWlzZ3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMjEzMzYsImV4cCI6MjA3NjY5NzMzNn0.KLcUTmYXRLI-QQt8p3ZodsK4wTLdA3ycy_0aPWLqZ1o";
+
+
+const KEY = "smiley_click_count_v1";
 const KO_KEY = "smiley_last_gameover";
 const RETRY_FLAG = "smiley_retrying";
 const INACT_MS = 10_000;
