@@ -65,6 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.remove("starting");
       document.getElementById("landing").style.display = "none";
       document.getElementById("cards").style.display = "none";
+      const acct = document.getElementById("accountBox");
+      const lb   = document.getElementById("leaderboardBox");
+      if (acct) acct.style.display = "none";
+      if (lb)   lb.style.display   = "none";
       document.getElementById("gameArea").style.display = "block";
 
       // initialize counter display
